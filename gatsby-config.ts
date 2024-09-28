@@ -21,7 +21,16 @@ const config: GatsbyConfig = {
       "path": "./src/images/"
     },
     __key: "images"
-  }]
+  },
+  {
+    resolve: `gatsby-source-filesystem`,
+    options: {
+      name: `data`,
+      path: `${__dirname}/data/`,
+    },
+  },
+  `gatsby-transformer-csv`,
+  ]
 };
 
 export default config;
