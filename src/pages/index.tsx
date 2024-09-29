@@ -47,13 +47,15 @@ const IndexPage: React.FC<PageProps> = () => {
 
     return (
         <div className={gridContainer}>
-            <div className={gridItem}>1</div>
+            <div className={gridItem}>
+
+            </div>
             <div className={gridItem}>2</div>
             <div className={gridItem}>
                 <ShipwreckMap shipwrecks={data.allDataCsv.nodes} setSelectedShipID={setSelectedShipID} setHoveredShipID={setHoveredShipID} hoveredShipID={hoveredShipID} selectedShipID={selectedShipID}></ShipwreckMap>
             </div>
             <div className={`${gridItem} ${fullWidth}`}>
-                <TimelineSmall shipwrecks={data.allDataCsv.nodes} setHoveredShipwreckID={setHoveredShipID} setSelectedShipwreckID={setSelectedShipID}/>
+                <TimelineSmall shipwrecks={data.allDataCsv.nodes} setHoveredShipwreckID={setHoveredShipID} setSelectedShipwreckID={setSelectedShipID} hoveredShipID={hoveredShipID} selectedShipID={selectedShipID}/>
             </div>
         </div>
     )
