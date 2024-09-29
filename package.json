@@ -16,6 +16,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@observablehq/plot": "^0.6.16",
     "framer-motion": "^11.9.0",
     "gatsby": "^5.13.7",
     "gatsby-plugin-image": "^3.13.1",

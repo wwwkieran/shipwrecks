@@ -2,6 +2,8 @@ import * as React from "react"
 import {graphql, HeadFC, PageProps, useStaticQuery} from "gatsby"
 import {useState} from "react";
 import ShipwreckMap from "../components/shipwreckMap";
+import { gridContainer, gridItem, fullWidth } from "./index.module.scss";
+import TimelineSmall from "../components/timelineSmall";
 
 
 const IndexPage: React.FC<PageProps> = () => {
@@ -36,8 +38,15 @@ const IndexPage: React.FC<PageProps> = () => {
 
 
     return (
-        <div>
-            <ShipwreckMap shipwrecks={data.allDataCsv.nodes} setSelectedShipID={setSelectedShipID}></ShipwreckMap>
+        <div className={gridContainer}>
+            <div className={gridItem}>1</div>
+            <div className={gridItem}>2</div>
+            <div className={gridItem}>
+                <ShipwreckMap shipwrecks={data.allDataCsv.nodes} setSelectedShipID={setSelectedShipID}></ShipwreckMap>
+            </div>
+            <div className={`${gridItem} ${fullWidth}`}>
+                <TimelineSmall shipwrecks={data.allDataCsv.nodes}/>
+            </div>
         </div>
     )
 }

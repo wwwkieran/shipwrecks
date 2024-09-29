@@ -1,0 +1,17 @@
+.gridContainer {
+  display: grid;
+  grid-template-columns: 2fr 1fr 8fr;
+  grid-template-rows: calc(97vh - 100px) 100px;
+  gap: 10px;
+  height: 100%;
+}
+
+.gridItem {
+  background-color: #ccc;
+  text-align: center;
+  padding: 0;
+}
+
+.fullWidth {
+  grid-column: span 3;
+}

@@ -38,7 +38,7 @@ const ShipwreckMap: React.FC<ShipwreckMapProps> = (props: ShipwreckMapProps) => 
             latitude: 40.725,
             zoom: 5
         }}
-        style={{ position: "absolute", top: 0, bottom: 0, left: 0, right: 0,  borderRadius: '15px'}}
+        // style={{ position: "absolute", top: 0, bottom: 0, left: 0, right: 0,  borderRadius: '15px'}}
         mapStyle="mapbox://styles/wwwkieran/cm1ibsr0e008r01p6hlr64jd5"
         minZoom={4}
         onZoom={(e) => {
@@ -47,7 +47,6 @@ const ShipwreckMap: React.FC<ShipwreckMapProps> = (props: ShipwreckMapProps) => 
     >
         <GeolocateControl ref={geolocateControlRef} style={{scale: 2, visibility: "hidden"}} position={"bottom-right"} onGeolocate={() => {setGeolocateLoading(false)}}
                           showUserHeading={true} onError={ (e) => {
-            // Todo: Popup error message with solution
             setGeolocateLoading(false)
             console.log(e)
         }}/>
@@ -57,7 +56,7 @@ const ShipwreckMap: React.FC<ShipwreckMapProps> = (props: ShipwreckMapProps) => 
                 if (isNaN(lat) || isNaN(long)) {
                    return
                 }
-                return (<Marker key={shipwreck.Ship + shipwreck.Year_Sank} longitude={long} element={undefined} latitude={lat} onClick={(e) => {onMarkerClick(shipwreck, index)}}>
+                return (<Marker key={shipwreck.id} longitude={long} element={undefined} latitude={lat} onClick={(e) => {onMarkerClick(shipwreck, index)}}>
                     <MapMarker shipwreck={shipwreck} selected={false} scale={markerZoom}/>
                 </Marker>)
             })}
