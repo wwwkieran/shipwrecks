@@ -32,6 +32,14 @@ const ShipwreckMap: React.FC<ShipwreckMapProps> = (props: ShipwreckMapProps) => 
     let geolocateControlRef = useRef<mapboxgl.GeolocateControl>(null);
     const [geolocateLoading, setGeolocateLoading] = useState(false)
 
+    useEffect(() => {
+        for (const shipwreck of props.shipwrecks) {
+            if (shipwreck.id === props.selectedShipID) {
+                mapRef.current?.easeTo({center: [parseFloat(shipwreck.Longitude), parseFloat(shipwreck.Latitude)]})
+            }
+        }
+    }, [props.selectedShipID]);
+
 
     return (<Map
         ref={mapRef}
