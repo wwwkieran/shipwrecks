@@ -7,12 +7,13 @@ import mapboxgl from "mapbox-gl";
 import {container, locateButton} from './shipwreckMap.module.scss'
 import IShipwreck from "../types/IShipwreck";
 import MapMarker from "./mapMarker";
+import getShipID from "../lib/getShipID";
 
 type ShipwreckMapProps = {
     shipwrecks: IShipwreck[]
-    setSelectedShipID: (arg0: string) => void
+    setSelectedShip: (arg0: IShipwreck) => void
     setHoveredShipID: (arg0: string) => void
-    selectedShipID: string
+    selectedShip: IShipwreck | null
     hoveredShipID: string
 }
 
@@ -20,7 +21,7 @@ const ShipwreckMap: React.FC<ShipwreckMapProps> = (props: ShipwreckMapProps) => 
     const mapRef = useRef<MapRef>(null);
     const onMarkerClick = (shipwreck: IShipwreck, index: number) => {
         // ref.current?.getElement().getElementsByTagName("svg")[0].getElementsByTagName("path")[0].setAttribute("fill", "#dc2626");
-        props.setSelectedShipID(shipwreck.id)
+        props.setSelectedShip(shipwreck)
         mapRef.current?.easeTo({center: [parseFloat(shipwreck.Longitude), parseFloat(shipwreck.Latitude)]})
     }
     // const [openings, setOpenings] = useState(props.openings)
@@ -33,12 +34,14 @@ const ShipwreckMap: React.FC<ShipwreckMapProps> = (props: ShipwreckMapProps) => 
     const [geolocateLoading, setGeolocateLoading] = useState(false)
 
     useEffect(() => {
-        for (const shipwreck of props.shipwrecks) {
-            if (shipwreck.id === props.selectedShipID) {
-                mapRef.current?.easeTo({center: [parseFloat(shipwreck.Longitude), parseFloat(shipwreck.Latitude)]})
+        if (props.selectedShip !== null) {
+            const long = parseFloat(props.selectedShip.Longitude)
+            const lat = parseFloat(props.selectedShip.Latitude)
+            if (!isNaN(long) && !isNaN(lat)) {
+                mapRef.current?.easeTo({center: [ long, lat]})
             }
         }
-    }, [props.selectedShipID]);
+    }, [props.selectedShip]);
 
 
     return (<Map
@@ -68,10 +71,12 @@ const ShipwreckMap: React.FC<ShipwreckMapProps> = (props: ShipwreckMapProps) => 
                    return
                 }
                 return (<Marker key={shipwreck.id} longitude={long} element={undefined} latitude={lat} onClick={(e) => {onMarkerClick(shipwreck, index)}} >
-                    <MapMarker shipwreck={shipwreck} selected={shipwreck.id === props.selectedShipID} hovered={shipwreck.id === props.hoveredShipID} scale={markerZoom} setHoveredShipID={props.setHoveredShipID}/>
+                    <MapMarker shipwreck={shipwreck} selected={shipwreck.id === getShipID(props.selectedShip)} hovered={shipwreck.id === props.hoveredShipID} scale={markerZoom} setHoveredShipID={props.setHoveredShipID}/>
                 </Marker>)
             })}
     </Map>)
 }
+
+
 
 export default ShipwreckMap

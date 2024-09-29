@@ -2,12 +2,13 @@ import * as Plot from "@observablehq/plot";
 import React from "react";
 import {LegacyRef, MutableRefObject, useEffect, useRef, useState} from "react";
 import IShipwreck from "../types/IShipwreck";
+import getShipID from "../lib/getShipID";
 
 type TimelineSmallProps = {
     shipwrecks: IShipwreck[]
     setHoveredShipwreckID: (arg0: string) => void,
-    setSelectedShipwreckID: (arg0: string) => void,
-    selectedShipID: string
+    setSelectedShipwreck: (arg0: IShipwreck | null) => void,
+    selectedShip: IShipwreck | null
     hoveredShipID: string
 }
 
@@ -24,7 +25,7 @@ const TimelineSmall: React.FC<TimelineSmallProps> = (props: TimelineSmallProps) 
             const year = parseInt(shipwreck.Year_Sank)
             if (!isNaN(year) && year > 1800) {
                 data.push({
-                    id: shipwreck.id,
+                    shipwreck: shipwreck,
                     year: year
                 })
             }
@@ -60,8 +61,8 @@ const TimelineSmall: React.FC<TimelineSmallProps> = (props: TimelineSmallProps) 
                     x: "year",
                     sort: "year",
                     title: "name",
-                    fill: d => (d.id === props.hoveredShipID || d.id === props.selectedShipID) ? "red" : "currentColor",
-                    stroke: d => d.id === props.selectedShipID ? "white" : "none",
+                    fill: d => (d.shipwreck.id === props.hoveredShipID || d.id === getShipID(props.selectedShip)) ? "red" : "currentColor",
+                    stroke: d => d.shipwreck.id === getShipID(props.selectedShip) ? "white" : "none",
                 })),
                 Plot.dotX(data, Plot.pointer(Plot.dodgeY({
                     x: "year",
@@ -72,27 +73,27 @@ const TimelineSmall: React.FC<TimelineSmallProps> = (props: TimelineSmallProps) 
             ]
         });
         plot.addEventListener("input", (event) => {
-            if (plot.value?.id !== undefined) {
+            if (plot.value?.shipwreck !== undefined) {
                 setUserIsCurrentlyInteracting(true);
-                props.setHoveredShipwreckID(plot.value?.id);
+                props.setHoveredShipwreckID(plot.value.shipwreck.id);
             } else {
                 setUserIsCurrentlyInteracting(false);
                 props.setHoveredShipwreckID("");
             }
         });
         plot.addEventListener("mousedown", (event) => {
-            if (plot.value?.id !== undefined) {
+            if (plot.value?.shipwreck !== undefined) {
                 setUserIsCurrentlyInteracting(true);
-                props.setSelectedShipwreckID(plot.value?.id);
+                props.setSelectedShipwreck(plot.value.shipwreck);
             } else {
                 setUserIsCurrentlyInteracting(false);
-                props.setSelectedShipwreckID("");
+                props.setSelectedShipwreck(null);
             }
         });
         // @ts-ignore
         containerRef.current.append(plot);
         return () => plot.remove();
-    }, [data, externalHoveredShipID, props.selectedShipID]);
+    }, [data, externalHoveredShipID, props.selectedShip]);
 
     // @ts-ignore
     return (<div ref={containerRef}  style={{width: '100%'}}/>);

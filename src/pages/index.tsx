@@ -4,6 +4,8 @@ import {useEffect, useState} from "react";
 import ShipwreckMap from "../components/shipwreckMap";
 import { gridContainer, gridItem, fullWidth } from "./index.module.scss";
 import TimelineSmall from "../components/timelineSmall";
+import IShipwreck from "../types/IShipwreck";
+import ShipwreckSmallDetail from "../components/shipwreckSmallDetail";
 
 
 const IndexPage: React.FC<PageProps> = () => {
@@ -32,7 +34,7 @@ const IndexPage: React.FC<PageProps> = () => {
       }
     }`)
 
-    const [selectedShipID, setSelectedShipID] = useState<string>("default value");
+    const [selectedShip, setSelectedShip] = useState<IShipwreck|null>(null);
     const [hoveredShipID, setHoveredShipID] = useState<string>("default value");
 
 
@@ -40,22 +42,18 @@ const IndexPage: React.FC<PageProps> = () => {
         console.log("hover:" + hoveredShipID)
     }, [hoveredShipID]);
 
-    useEffect(() => {
-        console.log("selected:" + selectedShipID)
-    }, [selectedShipID]);
-
 
     return (
         <div className={gridContainer}>
             <div className={gridItem}>
-
+                <ShipwreckSmallDetail shipwreck={selectedShip} setSelectedShip={setSelectedShip}/>
             </div>
             <div className={gridItem}>2</div>
             <div className={gridItem}>
-                <ShipwreckMap shipwrecks={data.allDataCsv.nodes} setSelectedShipID={setSelectedShipID} setHoveredShipID={setHoveredShipID} hoveredShipID={hoveredShipID} selectedShipID={selectedShipID}></ShipwreckMap>
+                <ShipwreckMap shipwrecks={data.allDataCsv.nodes} setSelectedShip={setSelectedShip} setHoveredShipID={setHoveredShipID} hoveredShipID={hoveredShipID} selectedShip={selectedShip}></ShipwreckMap>
             </div>
             <div className={`${gridItem} ${fullWidth}`}>
-                <TimelineSmall shipwrecks={data.allDataCsv.nodes} setHoveredShipwreckID={setHoveredShipID} setSelectedShipwreckID={setSelectedShipID} hoveredShipID={hoveredShipID} selectedShipID={selectedShipID}/>
+                <TimelineSmall shipwrecks={data.allDataCsv.nodes} setHoveredShipwreckID={setHoveredShipID} setSelectedShipwreck={setSelectedShip} hoveredShipID={hoveredShipID} selectedShip={selectedShip}/>
             </div>
         </div>
     )
