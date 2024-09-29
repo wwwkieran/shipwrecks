@@ -6,6 +6,7 @@ import { gridContainer, gridItem, fullWidth } from "./index.module.scss";
 import TimelineSmall from "../components/timelineSmall";
 import IShipwreck from "../types/IShipwreck";
 import ShipwreckSmallDetail from "../components/shipwreckSmallDetail";
+import DepthSmall from "../components/depthSmall";
 
 
 const IndexPage: React.FC<PageProps> = () => {
@@ -48,7 +49,8 @@ const IndexPage: React.FC<PageProps> = () => {
             <div className={gridItem}>
                 <ShipwreckSmallDetail shipwreck={selectedShip} setSelectedShip={setSelectedShip}/>
             </div>
-            <div className={gridItem}>2</div>
+            <div className={gridItem}><DepthSmall shipwrecks={data.allDataCsv.nodes} setHoveredShipwreckID={setHoveredShipID} setSelectedShipwreck={setSelectedShip} hoveredShipID={hoveredShipID} selectedShip={selectedShip}/>
+            </div>
             <div className={gridItem}>
                 <ShipwreckMap shipwrecks={data.allDataCsv.nodes} setSelectedShip={setSelectedShip} setHoveredShipID={setHoveredShipID} hoveredShipID={hoveredShipID} selectedShip={selectedShip}></ShipwreckMap>
             </div>
