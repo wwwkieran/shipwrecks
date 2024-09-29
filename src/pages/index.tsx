@@ -1,6 +1,6 @@
 import * as React from "react"
 import {graphql, HeadFC, PageProps, useStaticQuery} from "gatsby"
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import ShipwreckMap from "../components/shipwreckMap";
 import { gridContainer, gridItem, fullWidth } from "./index.module.scss";
 import TimelineSmall from "../components/timelineSmall";
@@ -36,16 +36,24 @@ const IndexPage: React.FC<PageProps> = () => {
     const [hoveredShipID, setHoveredShipID] = useState<string>("default value");
 
 
+    useEffect(() => {
+        console.log("hover:" + hoveredShipID)
+    }, [hoveredShipID]);
+
+    useEffect(() => {
+        console.log("selected:" + selectedShipID)
+    }, [selectedShipID]);
+
 
     return (
         <div className={gridContainer}>
             <div className={gridItem}>1</div>
             <div className={gridItem}>2</div>
             <div className={gridItem}>
-                <ShipwreckMap shipwrecks={data.allDataCsv.nodes} setSelectedShipID={setSelectedShipID}></ShipwreckMap>
+                <ShipwreckMap shipwrecks={data.allDataCsv.nodes} setSelectedShipID={setSelectedShipID} setHoveredShipID={setHoveredShipID} hoveredShipID={hoveredShipID} selectedShipID={selectedShipID}></ShipwreckMap>
             </div>
             <div className={`${gridItem} ${fullWidth}`}>
-                <TimelineSmall shipwrecks={data.allDataCsv.nodes}/>
+                <TimelineSmall shipwrecks={data.allDataCsv.nodes} setHoveredShipwreckID={setHoveredShipID} setSelectedShipwreckID={setSelectedShipID}/>
             </div>
         </div>
     )

@@ -11,6 +11,9 @@ import MapMarker from "./mapMarker";
 type ShipwreckMapProps = {
     shipwrecks: IShipwreck[]
     setSelectedShipID: (arg0: string) => void
+    setHoveredShipID: (arg0: string) => void
+    selectedShipID: string
+    hoveredShipID: string
 }
 
 const ShipwreckMap: React.FC<ShipwreckMapProps> = (props: ShipwreckMapProps) => {
@@ -56,8 +59,8 @@ const ShipwreckMap: React.FC<ShipwreckMapProps> = (props: ShipwreckMapProps) => 
                 if (isNaN(lat) || isNaN(long)) {
                    return
                 }
-                return (<Marker key={shipwreck.id} longitude={long} element={undefined} latitude={lat} onClick={(e) => {onMarkerClick(shipwreck, index)}}>
-                    <MapMarker shipwreck={shipwreck} selected={false} scale={markerZoom}/>
+                return (<Marker key={shipwreck.id} longitude={long} element={undefined} latitude={lat} onClick={(e) => {onMarkerClick(shipwreck, index)}} >
+                    <MapMarker shipwreck={shipwreck} selected={shipwreck.id === props.selectedShipID} hovered={shipwreck.id === props.hoveredShipID} scale={markerZoom} setHoveredShipID={props.setHoveredShipID}/>
                 </Marker>)
             })}
     </Map>)
