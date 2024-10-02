@@ -4,10 +4,11 @@
   grid-template-rows: calc(97vh - 100px) 100px;
   gap: 10px;
   height: 100%;
+  background-color: beige;
 }
 
 .gridItem {
-  background-color: #ccc;
+  background-color: #d9d9b9;
   text-align: center;
   padding: 0;
 }
