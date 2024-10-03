@@ -3,8 +3,7 @@ import {graphql, HeadFC, PageProps, useStaticQuery} from "gatsby"
 
 
 
-const ShipPage: React.FC<PageProps> = () => {
-
+const ShipPage: React.FC<PageProps> = (props) => {
 
 
     return (
@@ -13,5 +12,30 @@ const ShipPage: React.FC<PageProps> = () => {
 }
 
 export default ShipPage
+export const query = graphql`
+  query ($id: String) {
+    csv(id: {eq: $id}) {
+            id
+            imgPath
+            Dataset
+            Depth
+            ImgPath__3d
+            Destination_Port
+            Lake
+            ImgPath__Historical_other
+            Latitude
+            Length
+            Longitude
+            Origin_Port
+            Ship
+            Site_Description
+            Vessel_Type
+            Year_Built
+            Year_Sank
+    }
+  }
+`
+export const Head: HeadFC<PageProps> = () => <title> shipwreck </title>
 
-export const Head: HeadFC = () => <title>Shipwrecks</title>
+
+
