@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkshipwrecks=self.webpackChunkshipwrecks||[]).push([[979],{589:function(e,t,s){s.r(t),s.d(t,{Head:function(){return n}});var l=s(7294);t.default=()=>l.createElement("h1",null,"Hello this is the ship page");const n=()=>l.createElement("title",null,"Shipwrecks")}}]);
-//# sourceMappingURL=component---src-pages-ship-tsx-e7dbf9483c280d50b980.js.map
