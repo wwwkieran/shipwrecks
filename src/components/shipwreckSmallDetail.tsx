@@ -1,5 +1,7 @@
 import * as React from "react";
 import IShipwreck from "../types/IShipwreck";
+import {Layer} from "react-map-gl";
+import {Link} from "gatsby";
 
 type ShipwreckSmallDetailProps = {
         shipwreck: IShipwreck | null,
@@ -19,7 +21,9 @@ const ShipwreckSmallDetail: React.FC<ShipwreckSmallDetailProps> = (props) => {
                     <h5 style={{ color: "red", cursor: "pointer" }} onClick={() => { props.setSelectedShip(null) }}> Clear selection</h5>
                     <h1>{props.shipwreck.Ship}</h1>
                     <div>
+                        <Link to={`/ships/${props.shipwreck.id}`}>
                         <strong>id:</strong> <span>{props.shipwreck.id}</span>
+                        </Link>
                     </div>
                     <div>
                         <strong>Depth:</strong> <span>{props.shipwreck.Depth}</span>

@@ -17,8 +17,8 @@ export const createPages: GatsbyNode["createPages"] = async ({ actions, graphql 
     // @ts-ignore
     data.allDataCsv.nodes.forEach((node, index) => {
         actions.createPage({
-            path: 'ships/' + node.frontmatter.slug,
-            component: `${shipTemplate}?__contentFilePath=${node.internal.contentFilePath}`,
+            path: 'ships/' + node.id,
+            component: `${shipTemplate}`,
             context: {
                 id: node.id,
             }
