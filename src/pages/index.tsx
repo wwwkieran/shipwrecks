@@ -14,23 +14,29 @@ const IndexPage: React.FC<PageProps> = () => {
     query MyQuery {
       allDataCsv {
         nodes {
-            id
-            imgPath
-            Dataset
-            Depth
-            ImgPath__3d
-            Destination_Port
-            Lake
-            ImgPath__Historical_other
-            Latitude
-            Length
-            Longitude
-            Origin_Port
-            Ship
-            Site_Description
-            Vessel_Type
-            Year_Built
-            Year_Sank
+          Complete_Historic_Information_Link
+          Depth
+          Description
+          Engines
+          Hull_Material
+          Lake
+          Latitude
+          Longitude
+          Length
+          Name_s_
+          Official_Number
+          Registry
+          State_or_Province
+          Underwater_Image_Path
+          Vessel_Type
+          Year_Built
+          Width
+          Year_Captured
+          Year_Sank
+          _3DModelUrl
+          id
+          url
+          historicalImages
         }
       }
     }`)

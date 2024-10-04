@@ -19,7 +19,7 @@ const ShipwreckSmallDetail: React.FC<ShipwreckSmallDetailProps> = (props) => {
             <div style={{overflowY: "auto", maxHeight: "100%"}}>
                 <div style={{ overflowY: "auto", maxHeight: "100%" }}>
                     <h5 style={{ color: "red", cursor: "pointer" }} onClick={() => { props.setSelectedShip(null) }}> Clear selection</h5>
-                    <h1>{props.shipwreck.Ship}</h1>
+                    <h1>{props.shipwreck.Name_s_}</h1>
                     <div>
                         <Link to={`/ships/${props.shipwreck.id}`}>
                         <strong>id:</strong> <span>{props.shipwreck.id}</span>
@@ -29,16 +29,13 @@ const ShipwreckSmallDetail: React.FC<ShipwreckSmallDetailProps> = (props) => {
                         <strong>Depth:</strong> <span>{props.shipwreck.Depth}</span>
                     </div>
                     <div>
-                        <strong>Destination_Port:</strong> <span>{props.shipwreck.Destination_Port}</span>
-                    </div>
-                    <div>
                         <strong>Lake:</strong> <span>{props.shipwreck.Lake}</span>
                     </div>
                     <div>
                         <strong>Length:</strong> <span>{props.shipwreck.Length}</span>
                     </div>
                     <div>
-                        <strong>Site_Description:</strong> <span>{props.shipwreck.Site_Description}</span>
+                        <strong>Site_Description:</strong> <span>{props.shipwreck.Description}</span>
                     </div>
                     <div>
                         <strong>Vessel_Type:</strong> <span>{props.shipwreck.Vessel_Type}</span>
@@ -50,7 +47,7 @@ const ShipwreckSmallDetail: React.FC<ShipwreckSmallDetailProps> = (props) => {
                         <strong>Year_Sank:</strong> <span>{props.shipwreck.Year_Sank}</span>
                     </div>
                     <div>
-                        <img src={props.shipwreck.imgPath} alt="shipwreck" style={{ width: "100%" }} />
+                        <img src={props.shipwreck.Underwater_Image_Path} alt="shipwreck" style={{ width: "100%" }} />
                     </div>
                 </div>
             </div>
