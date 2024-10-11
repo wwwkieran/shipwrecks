@@ -1,62 +1,48 @@
 import * as React from "react"
-import {graphql, HeadFC, Link, PageProps, useStaticQuery} from "gatsby"
-import IShipwreck from "../types/IShipwreck";
-import IHistoricalImage from "../types/IHistoricalImage";
-
-
+import { graphql, HeadFC, Link, PageProps } from "gatsby"
+import IShipwreck from "../types/IShipwreck"
+import IHistoricalImage from "../types/IHistoricalImage"
+import { shipPage, shipName, iframeContainer, description, dataBox, gallery, galleryImage, backButton } from './ship.module.scss'
 
 const ShipPage: React.FC<PageProps> = (props) => {
-   // @ts-ignore
+    // @ts-ignore
     const shipwreck: IShipwreck = props.data.dataCsv
     console.log(shipwreck.historicalImages)
 
     return (
-        <div style={{overflowY: "auto", maxHeight: "100%"}}>
-            <div style={{overflowY: "auto", maxHeight: "100%"}}>
+        <div className={shipPage}>
+            <button className={backButton} onClick={() => window.history.back()}>Back</button>
+            <h1 className={shipName}>{shipwreck.Name_s_}</h1>
+            <div className={dataBox}>
+                <h2>Ship Data</h2>
+                <div><strong>id:</strong> <span>{shipwreck.id}</span></div>
+                <div><strong>Depth:</strong> <span>{shipwreck.Depth}</span></div>
+                <div><strong>Lake:</strong> <span>{shipwreck.Lake}</span></div>
+                <div><strong>Length:</strong> <span>{shipwreck.Length}</span></div>
+                <div><strong>Vessel Type:</strong> <span>{shipwreck.Vessel_Type}</span></div>
+                <div><strong>Year Built:</strong> <span>{shipwreck.Year_Built}</span></div>
+                <div><strong>Year Sank:</strong> <span>{shipwreck.Year_Sank}</span></div>
+            </div>
+            <div className={iframeContainer}>
+                <iframe width="100%" height="600" src={shipwreck._3DModelUrl} />
+            </div>
 
-                <h1>{shipwreck.Name_s_}</h1>
-                <div>
-                    <iframe width={600} height={600} src={shipwreck._3DModelUrl} />
-                </div>
-                <div>
-                    <Link to={`/ships/${shipwreck.id}`}>
-                        <strong>id:</strong> <span>{shipwreck.id}</span>
-                    </Link>
-                </div>
-                <div>
-                    <strong>Depth:</strong> <span>{shipwreck.Depth}</span>
-                </div>
-                <div>
-                    <strong>Lake:</strong> <span>{shipwreck.Lake}</span>
-                </div>
-                <div>
-                    <strong>Length:</strong> <span>{shipwreck.Length}</span>
-                </div>
-                <div>
-                    <strong>Site_Description:</strong> <span>{shipwreck.Description}</span>
-                </div>
-                <div>
-                    <strong>Vessel_Type:</strong> <span>{shipwreck.Vessel_Type}</span>
-                </div>
-                <div>
-                    <strong>Year_Built:</strong> <span>{shipwreck.Year_Built}</span>
-                </div>
-                <div>
-                    <strong>Year_Sank:</strong> <span>{shipwreck.Year_Sank}</span>
-                </div>
-                <div>
-                    <img src={`/underwater/${shipwreck.Underwater_Image_Path}`} alt="shipwreck" style={{width: "300px"}}/>
-                </div>
+            <div className={description}>
+                <strong>Description:</strong> <span>{shipwreck.Description}</span>
+            </div>
 
-                {JSON.parse(shipwreck.historicalImages).map((v: IHistoricalImage) => {
-                    return  <img src={`/historical/${v.fileName}`} alt="shipwreck" style={{width: "300px"}}/>
-                }) }
+            <div className={gallery}>
+                <h2>Historical Images</h2>
+                {JSON.parse(shipwreck.historicalImages).map((v: IHistoricalImage, index: number) => (
+                    <img key={index} src={`/historical/${v.fileName}`} alt="shipwreck" className={galleryImage} />
+                ))}
             </div>
         </div>
     )
 }
 
 export default ShipPage
+
 export const query = graphql`
   query ($id: String) {
     dataCsv(id: {eq: $id}) {
@@ -86,7 +72,5 @@ export const query = graphql`
     }
   }
 `
-export const Head: HeadFC<PageProps> = () => <title> shipwreck </title>
 
-
-
+export const Head: HeadFC<PageProps> = () => <title>Shipwreck</title>
