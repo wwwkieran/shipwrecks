@@ -3,6 +3,7 @@ import { graphql, HeadFC, Link, PageProps } from "gatsby"
 import IShipwreck from "../types/IShipwreck"
 import IHistoricalImage from "../types/IHistoricalImage"
 import { shipPage, shipName, iframeContainer, description, dataBox, gallery, galleryImage, backButton } from './ship.module.scss'
+import {SketchfabViewer} from "../components/sketchfabViewer";
 
 const ShipPage: React.FC<PageProps> = (props) => {
     // @ts-ignore
@@ -24,7 +25,7 @@ const ShipPage: React.FC<PageProps> = (props) => {
                 <div><strong>Year Sank:</strong> <span>{shipwreck.Year_Sank}</span></div>
             </div>
             <div className={iframeContainer}>
-                <iframe width="100%" height="600" src={shipwreck._3DModelUrl} />
+                <SketchfabViewer shipwreck={shipwreck}/>
             </div>
 
             <div className={description}>
