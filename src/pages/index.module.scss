@@ -10,7 +10,7 @@
 .gridItem {
   background: rgba(255, 255, 255, 0.192);
   backdrop-filter: blur(10px);
-  padding: 20px;
+  //padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -33,11 +33,14 @@
 .shipInfo {
   @extend .gridItem;
   grid-column: 2 / 4;
+  grid-row-start: 1;
+  grid-row-end: 2;
 }
 
 .depth {
   @extend .gridItem;
   grid-column: 3 / 4;
+  grid-row: 2;
 }
 
 
@@ -60,4 +63,18 @@
 
 .gridItem * {
   pointer-events: auto;
+}
+
+.globalContainer {
+    color: #232129;
+    font-family:  -apple-system, Roboto, sans-serif, serif;
+    height: 100%;
+}
+
+.title {
+  font-family: Helvetica;
+  text-align: center;
+  font-size: 24pt;
+  margin-top: auto;
+  margin-bottom: auto;
 }
