@@ -37,6 +37,8 @@ const IndexPage: React.FC<PageProps> = () => {
           id
           url
           historicalImages
+          Number_Died
+          Summary
         }
       }
     }`)

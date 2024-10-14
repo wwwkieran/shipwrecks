@@ -22,4 +22,6 @@ export default interface IShipwreck {
     id: string;
     url: string;
     historicalImages: string;
+    Number_Died: string;
+    Summary: string;
 }
