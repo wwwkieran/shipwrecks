@@ -8,13 +8,17 @@ type MapMarkerProps = {
     hovered: boolean,
     scale: number,
     shipwreck: IShipwreck,
-    setHoveredShipID: (arg0: string) => void
+    setHoveredShipID: (arg0: string) => void,
+    numDied: number,
+    scaleByNumDied: boolean,
 }
 
 const MapMarker: React.FC<MapMarkerProps> = (props: MapMarkerProps) => {
-    const circleSize = props.scale * 20;
+    const baseSize = props.scale * 20;
+    const circleSize = props.scaleByNumDied ? (props.numDied > 0 ? baseSize * Math.log(props.numDied + 1) : baseSize) : baseSize;
     const opacity = props.selected ? 0.8 : (props.hovered ? 0.6 : 0.3);
     const boxShadow = props.selected ? "0 0 10px 5px rgba(0, 0, 255, 0.5)" : (props.hovered ? "0 0 5px 2px rgba(0, 0, 255, 0.3)" : "none");
+    const strokeWidth = props.selected ? 3 : (props.hovered ? 0.6 : 0.3);
 
     return (
         <motion.div
@@ -36,20 +40,11 @@ const MapMarker: React.FC<MapMarkerProps> = (props: MapMarkerProps) => {
                     borderRadius: "50%",
                     transform: "translate(-50%, -50%)",
                     cursor: "pointer",
-                    boxShadow
+                    boxShadow,
+                    strokeWidth,
+                    stroke: "solid white"
                 }}
             />
-            {/*<p style={{*/}
-            {/*    position: "absolute",*/}
-            {/*    top: "50%",*/}
-            {/*    left: "50%",*/}
-            {/*    transform: "translate(-50%, -50%)",*/}
-            {/*    margin: "0px",*/}
-            {/*    cursor: "pointer",*/}
-            {/*    opacity: 1*/}
-            {/*}}>*/}
-            {/*    ⚓️*/}
-            {/*</p>*/}
         </motion.div>
     )
 }

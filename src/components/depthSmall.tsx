@@ -14,7 +14,7 @@ type DepthSmallProps = {
 
 const DepthSmall: React.FC<DepthSmallProps> = (props: DepthSmallProps) => {
     const containerRef = useRef<HTMLDivElement>();
-    const [data, setData] = useState<IShipwreck[]>();
+    const [data, setData] = useState<{shipwreck: IShipwreck, depth: number}[]>();
     const [userIsCurrentlyInteracting, setUserIsCurrentlyInteracting] = useState<boolean>(false);
     const [externalHoveredShipID, setExternalHoveredShipID] = useState<string>("");
     // const [externalSelectedShipID, setExternalSelectedShipID] = useState<string>("");
@@ -57,18 +57,44 @@ const DepthSmall: React.FC<DepthSmallProps> = (props: DepthSmallProps) => {
                 line: true,
             },
             marks: [
+                Plot.ruleY([props.hoveredShipID], {
+                    y: d => data.find(ship => ship.shipwreck.id === d)?.depth,
+                    stroke: "blue",
+                    strokeWidth: 10,
+                    opacity: 0.1
+                }),
+                Plot.ruleY([props.selectedShip?.id], {
+                    y: d => data.find(ship => ship.shipwreck.id === d)?.depth,
+                    stroke: "blue",
+                    strokeWidth: 3,
+                    opacity: 0.5
+                }),
                 Plot.dotY(data, Plot.dodgeX({
                     y: "depth",
                     sort: "depth",
                     title: "name",
-                    fill: d => (d.shipwreck.id === props.hoveredShipID || d.id === getShipID(props.selectedShip)) ? "red" : "currentColor",
+                    fill: d => (d.shipwreck.id === props.hoveredShipID || d.id === getShipID(props.selectedShip)) ? "blue" : "currentColor",
                     stroke: d => d.shipwreck.id === getShipID(props.selectedShip) ? "white" : "none",
                 })),
                 Plot.dotY(data, Plot.pointer(Plot.dodgeX({
                     y: "depth",
                     sort: "depth",
                     title: "name",
-                    fill: "red",
+                    fill: "blue",
+                }))),
+                Plot.ruleY(data, Plot.pointer(Plot.dodgeX({
+                    y: "depth",
+                    stroke: "blue",
+                    strokeWidth: 10,
+                    opacity: 0.1
+                }))),
+                Plot.tip(data, Plot.pointer(Plot.dodgeX({
+                    y: "depth",
+                    title: d => d.shipwreck.Name_s_,
+                    opacity: 0.8,
+                    // fill: "black",
+                    // stroke: "white",
+                    // color: "white"
                 }))),
             ]
         });

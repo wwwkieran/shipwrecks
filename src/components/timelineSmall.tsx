@@ -14,7 +14,7 @@ type TimelineSmallProps = {
 
 const TimelineSmall: React.FC<TimelineSmallProps> = (props: TimelineSmallProps) => {
     const containerRef = useRef<HTMLDivElement>();
-    const [data, setData] = useState<IShipwreck[]>();
+    const [data, setData] = useState<{shipwreck: IShipwreck, year: number}[]>();
     const [userIsCurrentlyInteracting, setUserIsCurrentlyInteracting] = useState<boolean>(false);
     const [externalHoveredShipID, setExternalHoveredShipID] = useState<string>("");
     // const [externalSelectedShipID, setExternalSelectedShipID] = useState<string>("");
@@ -50,25 +50,51 @@ const TimelineSmall: React.FC<TimelineSmallProps> = (props: TimelineSmallProps) 
         if (data === undefined) return;
         const plot = Plot.plot({
             width: containerRef.current?.offsetWidth, // Set the width to 100% of the container
-            height: 100,
+            height: containerRef.current?.offsetHeight,
             x: {
                 line: true,
-                tickFormat: d => d.toString()
+                tickFormat: d => d.toString(),
+                label: null,
             },
             marks: [
-
+                Plot.ruleX([props.hoveredShipID], {
+                    x: d => data.find(ship => ship.shipwreck.id === d)?.year,
+                    stroke: "blue",
+                    strokeWidth: 10,
+                    opacity: 0.1
+                }),
+                Plot.ruleX([props.selectedShip?.id], {
+                    x: d => data.find(ship => ship.shipwreck.id === d)?.year,
+                    stroke: "blue",
+                    strokeWidth: 3,
+                    opacity: 0.5
+                }),
                 Plot.dotX(data, Plot.dodgeY({
                     x: "year",
                     sort: "year",
                     title: "name",
-                    fill: d => (d.shipwreck.id === props.hoveredShipID || d.id === getShipID(props.selectedShip)) ? "red" : "currentColor",
+                    fill: d => (d.shipwreck.id === props.hoveredShipID || d.id === getShipID(props.selectedShip)) ? "blue" : "currentColor",
                     stroke: d => d.shipwreck.id === getShipID(props.selectedShip) ? "white" : "none",
                 })),
                 Plot.dotX(data, Plot.pointer(Plot.dodgeY({
                     x: "year",
                     sort: "year",
                     title: "name",
-                    fill: "red",
+                    fill: "blue",
+                }))),
+                Plot.ruleX(data, Plot.pointer(Plot.dodgeY({
+                    x: "year",
+                    stroke: "blue",
+                    strokeWidth: 10,
+                    opacity: 0.1
+                }))),
+                Plot.tip(data, Plot.pointer(Plot.dodgeY({
+                    x: "year",
+                    title: d => d.shipwreck.Name_s_,
+                    opacity: 0.8,
+                    // fill: "black",
+                    // stroke: "white",
+                    // color: "white"
                 }))),
             ]
         });
@@ -96,7 +122,7 @@ const TimelineSmall: React.FC<TimelineSmallProps> = (props: TimelineSmallProps) 
     }, [data, externalHoveredShipID, props.selectedShip]);
 
     // @ts-ignore
-    return (<div ref={containerRef}  style={{width: '100%'}}/>);
+    return (<div ref={containerRef}  style={{width: '100%', height: '100%'}}/>);
 }
 
 export default TimelineSmall

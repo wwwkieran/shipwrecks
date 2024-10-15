@@ -8,6 +8,9 @@ import {container, locateButton} from './shipwreckMap.module.scss'
 import IShipwreck from "../types/IShipwreck";
 import MapMarker from "./mapMarker";
 import getShipID from "../lib/getShipID";
+import { csv } from 'd3-fetch';
+import SmallMapMarker from "./smallMapMarker";
+
 
 type ShipwreckMapProps = {
     shipwrecks: IShipwreck[]
@@ -24,14 +27,16 @@ const ShipwreckMap: React.FC<ShipwreckMapProps> = (props: ShipwreckMapProps) => 
         props.setSelectedShip(shipwreck)
         mapRef.current?.easeTo({center: [parseFloat(shipwreck.Longitude), parseFloat(shipwreck.Latitude)]})
     }
-    // const [openings, setOpenings] = useState(props.openings)
-    // useEffect(() => {
-    //     console.log(props.openings)
-    //     setOpenings(props.openings)
-    // }, [props.openings]);
     const [markerZoom, setMarkerZoom] = useState(1)
     let geolocateControlRef = useRef<mapboxgl.GeolocateControl>(null);
     const [geolocateLoading, setGeolocateLoading] = useState(false)
+    const [unexploredShipwrecks, setUnexploredShipwrecks] = useState([])
+
+    useEffect(() => {
+        csv('/awois.csv').then(data => {
+            setUnexploredShipwrecks(data);
+        });
+    }, []);
 
     useEffect(() => {
         if (props.selectedShip !== null) {
@@ -44,6 +49,7 @@ const ShipwreckMap: React.FC<ShipwreckMapProps> = (props: ShipwreckMapProps) => 
     }, [props.selectedShip]);
 
 
+    // @ts-ignore
     return (<Map
         ref={mapRef}
         mapboxAccessToken={process.env.GATSBY_MAPBOX_TOKEN}
@@ -71,9 +77,26 @@ const ShipwreckMap: React.FC<ShipwreckMapProps> = (props: ShipwreckMapProps) => 
                    return
                 }
                 return (<Marker key={shipwreck.id} longitude={long} element={undefined} latitude={lat} onClick={(e) => {onMarkerClick(shipwreck, index)}} >
-                    <MapMarker shipwreck={shipwreck} selected={shipwreck.id === getShipID(props.selectedShip)} hovered={shipwreck.id === props.hoveredShipID} scale={markerZoom} setHoveredShipID={props.setHoveredShipID}/>
+                    <MapMarker shipwreck={shipwreck}
+                               selected={shipwreck.id === getShipID(props.selectedShip)}
+                               hovered={shipwreck.id === props.hoveredShipID}
+                               scale={markerZoom}
+                               setHoveredShipID={props.setHoveredShipID}
+                               scaleByNumDied={true}
+                               numDied={parseInt(shipwreck.Number_Died)}
+                    />
                 </Marker>)
             })}
+        {unexploredShipwrecks.map((row, index) => {
+            const lat = parseFloat(row["Column4"])
+            const long = parseFloat(row["Column5"])
+            if (isNaN(lat) || isNaN(long)) {
+                return
+            }
+            return (<Marker key={row["Column1"] + row["Column4"] + row["Column5"]}  element={undefined} longitude={long} /*element={undefined}*/ latitude={lat} >
+                <SmallMapMarker scale={markerZoom}/>
+            </Marker>)
+        })}
     </Map>)
 }
 
