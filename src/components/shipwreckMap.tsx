@@ -23,6 +23,7 @@ type ShipwreckMapProps = {
     shipDetailIsExpanded: boolean
     markerZoom: number
     setMarkerZoom: (arg0: number) => void
+    scaleByNumDied: boolean
 }
 
 const ShipwreckMap: React.FC<ShipwreckMapProps> = (props: ShipwreckMapProps) => {
@@ -102,7 +103,7 @@ const ShipwreckMap: React.FC<ShipwreckMapProps> = (props: ShipwreckMapProps) => 
                                hovered={shipwreck.id === props.hoveredShipID}
                                scale={props.markerZoom}
                                setHoveredShipID={props.setHoveredShipID}
-                               scaleByNumDied={true}
+                               scaleByNumDied={props.scaleByNumDied}
                                numDied={parseInt(shipwreck.Number_Died)}
                     />
                 </Marker>)

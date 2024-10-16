@@ -9,6 +9,7 @@ import ShipwreckDetail from "../components/shipwreckDetail";
 import DepthSmall from "../components/depthSmall";
 import { motion } from "framer-motion";
 import Legend from "../components/Legend";
+import {Switch} from "@nextui-org/switch";
 
 const IndexPage: React.FC<PageProps> = () => {
     const data = useStaticQuery(graphql`
@@ -48,6 +49,7 @@ const IndexPage: React.FC<PageProps> = () => {
     const [hoveredShipID, setHoveredShipID] = useState<string>("default value");
     const [expandedArea, setExpandedArea] = useState<string>("");
     const [markerZoom, setMarkerZoom] = useState(1)
+    const [scaleByNumDied, setScaleByNumDied] = useState(true)
 
 
     useEffect(() => {
@@ -57,11 +59,12 @@ const IndexPage: React.FC<PageProps> = () => {
     return (
         <main className={globalContainer}>
             <div style={{ position: "absolute", top: 0, left: 0, height: "100%", width: "100%" }}>
-                <ShipwreckMap shipwrecks={data.allDataCsv.nodes} setSelectedShip={setSelectedShip} setHoveredShipID={setHoveredShipID} hoveredShipID={hoveredShipID} selectedShip={selectedShip}  shipDetailIsExpanded={expandedArea === "ship"} markerZoom={markerZoom} setMarkerZoom={setMarkerZoom}/>
+                <ShipwreckMap shipwrecks={data.allDataCsv.nodes} setSelectedShip={setSelectedShip} setHoveredShipID={setHoveredShipID} hoveredShipID={hoveredShipID} selectedShip={selectedShip}  shipDetailIsExpanded={expandedArea === "ship"} markerZoom={markerZoom} setMarkerZoom={setMarkerZoom} scaleByNumDied={scaleByNumDied}/>
                 <div className={overlay}>
                     <div className={gridContainer}>
                         <div className={`${gridItem} top-left`}>
                             <h1 className={title}>Shipwreck Explorer</h1>
+                            <Switch style={{display: "block", marginLeft: "auto", marginRight: "auto"}} isSelected={scaleByNumDied} size="sm" onChange={(e) => setScaleByNumDied(e.target.checked)}> Scale markers by deaths </Switch>
                             <Legend scale={markerZoom}/>
                         </div>
                         <motion.div className={shipInfo}  initial={{height: "100%"}} animate={{height: expandedArea === "ship" ? "96vh" : "100%" }}>
