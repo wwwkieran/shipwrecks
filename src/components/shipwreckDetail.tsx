@@ -14,6 +14,7 @@ import "yet-another-react-lightbox/styles.css";
 
 import {useEffect} from "react";
 import shipwreckMap from "./shipwreckMap";
+import { motion } from "framer-motion";
 
 
 type ShipwreckDetailProps = {
@@ -26,6 +27,7 @@ type ShipwreckDetailProps = {
 const ShipwreckDetail: React.FC<ShipwreckDetailProps> = (props) => {
     const [index, setIndex] = React.useState(0);
     const [numHistoricalImages, setNumHistoricalImages] = React.useState(0);
+    const [isGalleryExpanded, setIsGalleryExpanded] = React.useState(false);
     let slides: any[] = []
     let photoComponents = (<></>)
 
@@ -90,15 +92,32 @@ const ShipwreckDetail: React.FC<ShipwreckDetailProps> = (props) => {
             </div>
             {props.expanded && (<div className={infoContainers}>
 
-                <div className={descDiv} style={{marginLeft: "auto", display: numHistoricalImages > 0 ? "block" : "none" }}>
+                <motion.div
+                    className={descDiv}
+                    style={{
+                        cursor: "pointer"
+                    }}
+                    animate={{
+                        marginLeft: "auto",
+                        display: numHistoricalImages > 0 ? "block" : "none",
+                        // position: isGalleryExpanded ? "fixed" : "relative",
+                        // top: isGalleryExpanded ? 0 : "auto",
+                        // left: isGalleryExpanded ? 0 : "auto",
+                        width: isGalleryExpanded ? "30vw" : "300px",
+                        maxHeight: isGalleryExpanded ? "80vh" : "30vh",
+                        zIndex: isGalleryExpanded ? 1000 : "auto",
+                    }}
+                    onClick={() => setIsGalleryExpanded(!isGalleryExpanded)}
+                >
                     {
                         numHistoricalImages > 0 && JSON.parse(props.shipwreck.historicalImages).map((v: IHistoricalImage, index: number) => (
-                        <img key={index} src={`/historical/${v.fileName}.jpeg`} alt="shipwreck" className={galleryImage} />
-                    ))}
-                </div>
+                            <img key={index} src={`/historical/${v.fileName}.jpeg`} alt="shipwreck" className={galleryImage} style={{width: "100%"}} />
+                        ))}
+                </motion.div>
 
 
-                <div className={descDiv} style={{maxWidth:500}}>{props.shipwreck.Summary}</div>
+                <div className={descDiv} style={{maxWidth:500,  display: isGalleryExpanded ? "none" : "block",
+                }}>{props.shipwreck.Summary}</div>
             </div>)}
             <div className={bottomButton} onClick={() => {
                 if (props.expanded) {
@@ -111,44 +130,6 @@ const ShipwreckDetail: React.FC<ShipwreckDetailProps> = (props) => {
             </div>
         </div>
     );
-
-        // return (
-        //     <div style={{overflowY: "auto", maxHeight: "100%"}}>
-        //         <div style={{ overflowY: "auto", maxHeight: "100%" }}>
-        //             <h5 style={{ color: "red", cursor: "pointer" }} onClick={() => { props.setSelectedShip(null) }}> Clear selection</h5>
-        //             <h1>{props.shipwreck.Name_s_}</h1>
-        //             <div>
-        //                 <Link to={`/ships/${props.shipwreck.id}`}>
-        //                 <strong>id:</strong> <span>{props.shipwreck.id}</span>
-        //                 </Link>
-        //             </div>
-        //             <div>
-        //                 <strong>Depth:</strong> <span>{props.shipwreck.Depth}</span>
-        //             </div>
-        //             <div>
-        //                 <strong>Lake:</strong> <span>{props.shipwreck.Lake}</span>
-        //             </div>
-        //             <div>
-        //                 <strong>Length:</strong> <span>{props.shipwreck.Length}</span>
-        //             </div>
-        //             <div>
-        //                 <strong>Site_Description:</strong> <span>{props.shipwreck.Description}</span>
-        //             </div>
-        //             <div>
-        //                 <strong>Vessel_Type:</strong> <span>{props.shipwreck.Vessel_Type}</span>
-        //             </div>
-        //             <div>
-        //                 <strong>Year_Built:</strong> <span>{props.shipwreck.Year_Built}</span>
-        //             </div>
-        //             <div>
-        //                 <strong>Year_Sank:</strong> <span>{props.shipwreck.Year_Sank}</span>
-        //             </div>
-        //             <div>
-        //                 <img src={props.shipwreck.Underwater_Image_Path} alt="shipwreck" style={{ width: "100%" }} />
-        //             </div>
-        //         </div>
-        //     </div>
-        // )
 }
 
-export default ShipwreckDetail
+export default ShipwreckDetail;

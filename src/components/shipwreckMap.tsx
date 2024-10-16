@@ -21,6 +21,8 @@ type ShipwreckMapProps = {
     selectedShip: IShipwreck | null
     hoveredShipID: string
     shipDetailIsExpanded: boolean
+    markerZoom: number
+    setMarkerZoom: (arg0: number) => void
 }
 
 const ShipwreckMap: React.FC<ShipwreckMapProps> = (props: ShipwreckMapProps) => {
@@ -30,7 +32,6 @@ const ShipwreckMap: React.FC<ShipwreckMapProps> = (props: ShipwreckMapProps) => 
         props.setSelectedShip(shipwreck)
         mapRef.current?.easeTo({center: [parseFloat(shipwreck.Longitude), parseFloat(shipwreck.Latitude)], offset: [props.shipDetailIsExpanded ? mapRef.current.getContainer().clientWidth * 0.25 : 0, 0]})
     }
-    const [markerZoom, setMarkerZoom] = useState(1)
     let geolocateControlRef = useRef<mapboxgl.GeolocateControl>(null);
     const [geolocateLoading, setGeolocateLoading] = useState(false)
     const [unexploredShipwrecks, setUnexploredShipwrecks] = useState([])
@@ -80,7 +81,7 @@ const ShipwreckMap: React.FC<ShipwreckMapProps> = (props: ShipwreckMapProps) => 
         mapStyle="mapbox://styles/wwwkieran/cm2b3oyp4000c01qk1oi07w4i"
         minZoom={5}
         onZoom={(e) => {
-            setMarkerZoom(e.viewState.zoom/5)
+            props.setMarkerZoom(e.viewState.zoom/5)
         }}
     >
         <GeolocateControl ref={geolocateControlRef} style={{scale: 2, visibility: "hidden"}} position={"bottom-right"} onGeolocate={() => {setGeolocateLoading(false)}}
@@ -99,7 +100,7 @@ const ShipwreckMap: React.FC<ShipwreckMapProps> = (props: ShipwreckMapProps) => 
                     <MapMarker shipwreck={shipwreck}
                                selected={shipwreck.id === getShipID(props.selectedShip)}
                                hovered={shipwreck.id === props.hoveredShipID}
-                               scale={markerZoom}
+                               scale={props.markerZoom}
                                setHoveredShipID={props.setHoveredShipID}
                                scaleByNumDied={true}
                                numDied={parseInt(shipwreck.Number_Died)}
@@ -114,7 +115,7 @@ const ShipwreckMap: React.FC<ShipwreckMapProps> = (props: ShipwreckMapProps) => 
                 return
             }
             return (<Marker key={row["Column1"] + row["Column4"] + row["Column5"]}  element={undefined} longitude={long} /*element={undefined}*/ latitude={lat} >
-                <SmallMapMarker scale={markerZoom}/>
+                <SmallMapMarker scale={props.markerZoom}/>
             </Marker>)
         })}
         <ReactTooltip id="tooltip"/>

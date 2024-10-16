@@ -14,7 +14,7 @@ type MapMarkerProps = {
 }
 
 const MapMarker: React.FC<MapMarkerProps> = (props: MapMarkerProps) => {
-    const baseSize = props.scale * 20;
+    const baseSize = props.scale * 15;
     const circleSize = props.scaleByNumDied ? (props.numDied > 0 ? baseSize * Math.log(props.numDied + 1) : baseSize) : baseSize;
     const opacity = props.selected ? 0.8 : (props.hovered ? 0.6 : 0.3);
     const boxShadow = props.selected ? "0 0 10px 5px rgba(0, 0, 255, 0.5)" : (props.hovered ? "0 0 5px 2px rgba(0, 0, 255, 0.3)" : "none");

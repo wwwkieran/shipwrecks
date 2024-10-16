@@ -8,6 +8,7 @@ import IShipwreck from "../types/IShipwreck";
 import ShipwreckDetail from "../components/shipwreckDetail";
 import DepthSmall from "../components/depthSmall";
 import { motion } from "framer-motion";
+import Legend from "../components/Legend";
 
 const IndexPage: React.FC<PageProps> = () => {
     const data = useStaticQuery(graphql`
@@ -46,6 +47,8 @@ const IndexPage: React.FC<PageProps> = () => {
     const [selectedShip, setSelectedShip] = useState<IShipwreck|null>(null);
     const [hoveredShipID, setHoveredShipID] = useState<string>("default value");
     const [expandedArea, setExpandedArea] = useState<string>("");
+    const [markerZoom, setMarkerZoom] = useState(1)
+
 
     useEffect(() => {
         console.log("hover:" + hoveredShipID)
@@ -54,11 +57,12 @@ const IndexPage: React.FC<PageProps> = () => {
     return (
         <main className={globalContainer}>
             <div style={{ position: "absolute", top: 0, left: 0, height: "100%", width: "100%" }}>
-                <ShipwreckMap shipwrecks={data.allDataCsv.nodes} setSelectedShip={setSelectedShip} setHoveredShipID={setHoveredShipID} hoveredShipID={hoveredShipID} selectedShip={selectedShip}  shipDetailIsExpanded={expandedArea === "ship"}/>
+                <ShipwreckMap shipwrecks={data.allDataCsv.nodes} setSelectedShip={setSelectedShip} setHoveredShipID={setHoveredShipID} hoveredShipID={hoveredShipID} selectedShip={selectedShip}  shipDetailIsExpanded={expandedArea === "ship"} markerZoom={markerZoom} setMarkerZoom={setMarkerZoom}/>
                 <div className={overlay}>
                     <div className={gridContainer}>
                         <div className={`${gridItem} top-left`}>
                             <h1 className={title}>Shipwreck Explorer</h1>
+                            <Legend scale={markerZoom}/>
                         </div>
                         <motion.div className={shipInfo}  initial={{height: "100%"}} animate={{height: expandedArea === "ship" ? "96vh" : "100%" }}>
                             <ShipwreckDetail shipwreck={selectedShip} setSelectedShip={setSelectedShip} expanded={expandedArea === "ship"} setExpandedArea={(s) => {setExpandedArea(s)}}/>
