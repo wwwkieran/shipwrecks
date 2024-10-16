@@ -20,6 +20,7 @@ type ShipwreckMapProps = {
     setHoveredShipID: (arg0: string) => void
     selectedShip: IShipwreck | null
     hoveredShipID: string
+    shipDetailIsExpanded: boolean
 }
 
 const ShipwreckMap: React.FC<ShipwreckMapProps> = (props: ShipwreckMapProps) => {
@@ -27,7 +28,7 @@ const ShipwreckMap: React.FC<ShipwreckMapProps> = (props: ShipwreckMapProps) => 
     const onMarkerClick = (shipwreck: IShipwreck, index: number) => {
         // ref.current?.getElement().getElementsByTagName("svg")[0].getElementsByTagName("path")[0].setAttribute("fill", "#dc2626");
         props.setSelectedShip(shipwreck)
-        mapRef.current?.easeTo({center: [parseFloat(shipwreck.Longitude), parseFloat(shipwreck.Latitude)]})
+        mapRef.current?.easeTo({center: [parseFloat(shipwreck.Longitude), parseFloat(shipwreck.Latitude)], offset: [props.shipDetailIsExpanded ? mapRef.current.getContainer().clientWidth * 0.25 : 0, 0]})
     }
     const [markerZoom, setMarkerZoom] = useState(1)
     let geolocateControlRef = useRef<mapboxgl.GeolocateControl>(null);
@@ -45,10 +46,24 @@ const ShipwreckMap: React.FC<ShipwreckMapProps> = (props: ShipwreckMapProps) => 
             const long = parseFloat(props.selectedShip.Longitude)
             const lat = parseFloat(props.selectedShip.Latitude)
             if (!isNaN(long) && !isNaN(lat)) {
-                mapRef.current?.easeTo({center: [ long, lat]})
+                mapRef.current?.easeTo({center: [ long, lat], offset: [props.shipDetailIsExpanded ? mapRef.current.getContainer().clientWidth * -0.35 : 0, 0]})
             }
         }
     }, [props.selectedShip]);
+
+    useEffect(() => {
+        if (props.selectedShip !== null) {
+            if (props.shipDetailIsExpanded) {
+                mapRef.current?.easeTo({
+                    center: [parseFloat(props.selectedShip.Longitude), parseFloat(props.selectedShip.Latitude)],
+                    offset: [mapRef.current.getContainer().clientWidth * -0.35, 0]
+                });
+            } else {
+
+                mapRef.current?.easeTo({center: [parseFloat(props.selectedShip.Longitude), parseFloat(props.selectedShip.Latitude)]})
+            }
+        }
+    }, [props.shipDetailIsExpanded]);
 
 
     // @ts-ignore

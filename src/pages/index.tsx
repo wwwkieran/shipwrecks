@@ -54,7 +54,7 @@ const IndexPage: React.FC<PageProps> = () => {
     return (
         <main className={globalContainer}>
             <div style={{ position: "absolute", top: 0, left: 0, height: "100%", width: "100%" }}>
-                <ShipwreckMap shipwrecks={data.allDataCsv.nodes} setSelectedShip={setSelectedShip} setHoveredShipID={setHoveredShipID} hoveredShipID={hoveredShipID} selectedShip={selectedShip} />
+                <ShipwreckMap shipwrecks={data.allDataCsv.nodes} setSelectedShip={setSelectedShip} setHoveredShipID={setHoveredShipID} hoveredShipID={hoveredShipID} selectedShip={selectedShip}  shipDetailIsExpanded={expandedArea === "ship"}/>
                 <div className={overlay}>
                     <div className={gridContainer}>
                         <div className={`${gridItem} top-left`}>
