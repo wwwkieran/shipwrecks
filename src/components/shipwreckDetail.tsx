@@ -55,7 +55,13 @@ const ShipwreckDetail: React.FC<ShipwreckDetailProps> = (props) => {
 
     useEffect(() => {
         if (props.shipwreck !== null) {
-            setNumHistoricalImages(JSON.parse(props.shipwreck.historicalImages).length)
+            let images = []
+            try {
+                images = JSON.parse(props.shipwreck.historicalImages).length
+            } catch (e) {
+                console.log("couldn't parse")
+            }
+            setNumHistoricalImages(images)
         }
     }, [props.shipwreck]);
 
@@ -86,7 +92,7 @@ const ShipwreckDetail: React.FC<ShipwreckDetailProps> = (props) => {
 
                 <div className={descDiv} style={{marginLeft: "auto", display: numHistoricalImages > 0 ? "block" : "none" }}>
                     {
-                        JSON.parse(props.shipwreck.historicalImages).map((v: IHistoricalImage, index: number) => (
+                        numHistoricalImages > 0 && JSON.parse(props.shipwreck.historicalImages).map((v: IHistoricalImage, index: number) => (
                         <img key={index} src={`/historical/${v.fileName}.jpeg`} alt="shipwreck" className={galleryImage} />
                     ))}
                 </div>
