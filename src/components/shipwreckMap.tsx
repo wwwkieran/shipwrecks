@@ -59,8 +59,9 @@ const ShipwreckMap: React.FC<ShipwreckMapProps> = (props: ShipwreckMapProps) => 
             zoom: 5
         }}
         // style={{ position: "absolute", top: 0, bottom: 0, left: 0, right: 0,  borderRadius: '15px'}}
-        mapStyle="mapbox://styles/wwwkieran/cm1ibsr0e008r01p6hlr64jd5"
-        minZoom={4}
+        // mapStyle="mapbox://styles/wwwkieran/cm1ibsr0e008r01p6hlr64jd5"
+        mapStyle="mapbox://styles/wwwkieran/cm2b3oyp4000c01qk1oi07w4i"
+        minZoom={5}
         onZoom={(e) => {
             setMarkerZoom(e.viewState.zoom/5)
         }}
@@ -70,7 +71,8 @@ const ShipwreckMap: React.FC<ShipwreckMapProps> = (props: ShipwreckMapProps) => 
             setGeolocateLoading(false)
             console.log(e)
         }}/>
-            {props.shipwrecks.map((shipwreck, index) => {
+            {
+                props.shipwrecks.map((shipwreck, index) => {
                 const lat = parseFloat(shipwreck.Latitude)
                 const long = parseFloat(shipwreck.Longitude)
                 if (isNaN(lat) || isNaN(long)) {
@@ -86,7 +88,8 @@ const ShipwreckMap: React.FC<ShipwreckMapProps> = (props: ShipwreckMapProps) => 
                                numDied={parseInt(shipwreck.Number_Died)}
                     />
                 </Marker>)
-            })}
+            })
+            }
         {unexploredShipwrecks.map((row, index) => {
             const lat = parseFloat(row["Column4"])
             const long = parseFloat(row["Column5"])
