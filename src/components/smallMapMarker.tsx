@@ -17,6 +17,8 @@ const SmallMapMarker: React.FC<SmallMapMarkerProps> = (props: SmallMapMarkerProp
             animate={{ opacity }}
             transition={{ type: "spring", duration: 0.4, bounce: 0.6 }}
             style={{ position: "relative", width: baseSize, height: baseSize }}
+            data-tooltip-id={"tooltip"}
+            data-tooltip-content={"Unexplored Shipwreck"}
         >
             <div
                 style={{

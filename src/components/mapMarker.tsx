@@ -1,6 +1,6 @@
 import * as React from "react";
-// @ts-ignore
 import { motion } from "framer-motion";
+import { Tooltip as ReactTooltip } from 'react-tooltip'
 import IShipwreck from "../types/IShipwreck";
 
 type MapMarkerProps = {
@@ -21,31 +21,35 @@ const MapMarker: React.FC<MapMarkerProps> = (props: MapMarkerProps) => {
     const strokeWidth = props.selected ? 3 : (props.hovered ? 0.6 : 0.3);
 
     return (
-        <motion.div
-            initial={{ opacity: 0 }} exit={{ opacity: 0 }}
-            animate={{ opacity }}
-            transition={{ type: "spring", duration: 0.4, bounce: 0.6 }}
-            onMouseEnter={() => { props.setHoveredShipID(props.shipwreck.id) }}
-            onMouseLeave={() => { props.setHoveredShipID("") }}
-            style={{ position: "relative", width: circleSize, height: circleSize }}
-        >
-            <div
-                style={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    width: circleSize,
-                    height: circleSize,
-                    backgroundColor: "rgba(0, 0, 255, 0.3)",
-                    borderRadius: "50%",
-                    transform: "translate(-50%, -50%)",
-                    cursor: "pointer",
-                    boxShadow,
-                    strokeWidth,
-                    stroke: "solid white"
-                }}
-            />
-        </motion.div>
+        <>
+            <motion.div
+                initial={{ opacity: 0 }} exit={{ opacity: 0 }}
+                animate={{ opacity }}
+                transition={{ type: "spring", duration: 0.4, bounce: 0.6 }}
+                onMouseEnter={() => { props.setHoveredShipID(props.shipwreck.id) }}
+                onMouseLeave={() => { props.setHoveredShipID("") }}
+                style={{ position: "relative", width: circleSize, height: circleSize }}
+                data-tooltip-id={"tooltip"}
+                data-tooltip-content={props.shipwreck.Name_s_}
+            >
+                <div
+                    style={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        width: circleSize,
+                        height: circleSize,
+                        backgroundColor: "rgba(0, 0, 255, 0.3)",
+                        borderRadius: "50%",
+                        transform: "translate(-50%, -50%)",
+                        cursor: "pointer",
+                        boxShadow,
+                        strokeWidth,
+                        stroke: "solid white"
+                    }}
+                />
+            </motion.div>
+        </>
     )
 }
 

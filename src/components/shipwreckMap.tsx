@@ -10,6 +10,8 @@ import MapMarker from "./mapMarker";
 import getShipID from "../lib/getShipID";
 import { csv } from 'd3-fetch';
 import SmallMapMarker from "./smallMapMarker";
+import {Tooltip as ReactTooltip} from "react-tooltip";
+import 'react-tooltip/dist/react-tooltip.css'
 
 
 type ShipwreckMapProps = {
@@ -100,6 +102,7 @@ const ShipwreckMap: React.FC<ShipwreckMapProps> = (props: ShipwreckMapProps) => 
                 <SmallMapMarker scale={markerZoom}/>
             </Marker>)
         })}
+        <ReactTooltip id="tooltip"/>
     </Map>)
 }
 
